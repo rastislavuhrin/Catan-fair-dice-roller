@@ -31,6 +31,7 @@ class MyAppState extends ChangeNotifier {
   int randomValue = 0;
   int mainIndex = 0;
   int seven = 0;
+  List<int> nextRoundSevens = [];
 
   void newGame() {
     history.clear();
@@ -63,14 +64,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
     showAlertDialog(BuildContext context) {
       // Create button
-      Widget cancelButton = OutlinedButton(
-        child: Text("nie"),
+      Widget cancelButton = TextButton(
+        child: Text(
+          "nie",
+          style: TextStyle(color: Colors.red),
+        ),
         onPressed: () {
           Navigator.of(context).pop();
         },
       );
-      Widget okButton = OutlinedButton(
-        child: Text("ano"),
+      Widget okButton = TextButton(
+        child: Text(
+          "ano",
+          style: TextStyle(fontSize: 20),
+        ),
         onPressed: () {
           appState.newGame();
           Navigator.of(context).pop();
@@ -151,17 +158,116 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-  var order = [7, 1, 2, 3, 1, 7, 2, 4, 1, 7, 3, 5, 7, 1, 2, 7, 4, 1, 7, 2, 3];
+  var order = [1, 2, 3, 1, 2, 4, 1, 3, 5, 1, 2, 4, 1, 2, 3];
 
   var rng = Random();
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    print(appState.randomValue);
-    print(appState.mainIndex);
+    var sevens = [];
+    var players = 4;
 
-    void daco(int first, int second) {
+    void generateNextNumber(int first, int second) {
+      if (appState.mainIndex == 0) {
+        sevens = [];
+        if (players == 3) {
+          print('nextRoundSevens 1 -  ${appState.nextRoundSevens}');
+          sevens = [...appState.nextRoundSevens];
+          print('sevens $sevens');
+          var pool = [1, 2, 3];
+          var randomN = rng.nextInt(pool.length);
+          sevens.add(pool[randomN]);
+          pool.removeAt(randomN);
+
+          randomN = rng.nextInt(pool.length);
+          sevens.add(pool[randomN]);
+          pool.removeAt(randomN);
+
+          sevens.add(pool[0]);
+
+          if (sevens.length < 5) {
+            pool = [1, 2, 3];
+            randomN = rng.nextInt(pool.length);
+            sevens.add(pool[randomN]);
+            pool.removeAt(randomN);
+            if (sevens.length == 4) {
+              randomN = rng.nextInt(pool.length);
+              sevens.add(pool[randomN]);
+              pool.removeAt(randomN);
+            }
+          }
+
+          appState.nextRoundSevens = [...pool];
+          print('appState.nextRoundSevens ${appState.nextRoundSevens}');
+
+          pool = [1, 2, 3];
+        }
+        if (players == 4) {
+          // pri hre styroch
+          var pool = [1, 2, 3, 4];
+          if (appState.nextRoundSevens.isEmpty) {
+            sevens = [...pool];
+            sevens.shuffle();
+          } else {
+            if (appState.nextRoundSevens.length == 1) {
+              sevens = [...appState.nextRoundSevens, ...pool];
+            } else {
+              sevens = [...appState.nextRoundSevens];
+            }
+            sevens.shuffle();
+          }
+          print("waaat sevens $sevens");
+
+          var randomN = 0;
+          for (var i = 1; i <= 3; i++) {
+            if (sevens.length == 5) break;
+            randomN = rng.nextInt(pool.length);
+            sevens.add(pool[randomN]);
+            pool.removeAt(randomN);
+          }
+          // if (sevens.length < 5) {
+          //   randomN = rng.nextInt(pool.length);
+          //   sevens.add(pool[randomN]);
+          //   pool.removeAt(randomN);
+          //   if (sevens.length < 5) {
+          //     randomN = rng.nextInt(pool.length);
+          //     sevens.add(pool[randomN]);
+          //     pool.removeAt(randomN);
+          //   }
+          //   if (sevens.length < 5) {
+          //     randomN = rng.nextInt(pool.length);
+          //     sevens.add(pool[randomN]);
+          //     pool.removeAt(randomN);
+          //   }
+          // }
+
+          // randomN = rng.nextInt(pool.length);
+          // sevens.add(pool[randomN]);
+          // pool.removeAt(randomN);
+
+          // randomN = rng.nextInt(pool.length);
+          // sevens.add(pool[randomN]);
+          // pool.removeAt(randomN);
+
+          // sevens.add(pool[0]);
+
+          // pool = [1, 2, 3, 4];
+          // randomN = rng.nextInt(pool.length);
+          // sevens.add(pool[randomN]);
+          appState.nextRoundSevens = [...pool];
+        }
+        order = [1, 2, 3, 1, 2, 4, 1, 3, 5, 1, 2, 4, 1, 2, 3];
+
+        print("waaat sevens $sevens");
+        order.insert(sevens[0] - 1, 7);
+        order.insert(sevens[1] + 3, 7);
+        order.insert(sevens[2] + 7, 7);
+        order.insert(sevens[3] + 11, 7);
+        order.insert(sevens[4] + 15, 7);
+
+        print('WOW $order');
+      }
       var tempRandomValue = 0;
       var countOfFirst = appState.history.where((x) => x == first).length;
       var countOfSecond = appState.history.where((x) => x == second).length;
@@ -178,7 +284,7 @@ class _MyWidgetState extends State<MyWidget> {
         appState.history.add(tempRandomValue);
         appState.randomValue = tempRandomValue;
         appState.mainIndex++;
-        if (appState.mainIndex == 15) appState.mainIndex = 0;
+        if (appState.mainIndex == 20) appState.mainIndex = 0;
       });
     }
 
@@ -195,22 +301,22 @@ class _MyWidgetState extends State<MyWidget> {
             onPressed: () {
               switch (order[appState.mainIndex]) {
                 case 1:
-                  daco(6, 8);
+                  generateNextNumber(6, 8);
                   break;
                 case 2:
-                  daco(5, 9);
+                  generateNextNumber(5, 9);
                   break;
                 case 3:
-                  daco(4, 10);
+                  generateNextNumber(4, 10);
                   break;
                 case 4:
-                  daco(3, 11);
+                  generateNextNumber(3, 11);
                   break;
                 case 5:
-                  daco(2, 12);
+                  generateNextNumber(2, 12);
                   break;
                 case 7:
-                  daco(7, 7);
+                  generateNextNumber(7, 7);
                   break;
                 default:
                   print("CHYBA");
