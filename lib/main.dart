@@ -32,11 +32,16 @@ class AppState extends ChangeNotifier {
   int mainIndex = 0;
   int seven = 0;
   List<int> nextRoundSevens = [];
+  bool firstGeneration = true;
+  List<int> whichPlayerRollsSeven = [];
+  int players = 4;
 
   void newGame() {
     history.clear();
     mainIndex = 0;
     randomValue = 0;
+    firstGeneration = true;
+
     notifyListeners();
   }
 }
@@ -169,92 +174,156 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
     // var sevens = [];
-    // var players = 3;
+
+    void addSevens() {
+      order = [...halfOrder, ...halfOrder];
+
+      var rndm = [1, 2, 3, 4];
+      rndm.shuffle();
+      if (appState.players == 2) {
+        appState.whichPlayerRollsSeven = [1, 1, 1, 2, 2, 2];
+        appState.whichPlayerRollsSeven.shuffle();
+      }
+      if (appState.players == 3) {
+        appState.whichPlayerRollsSeven = [1, 1, 2, 2, 3, 3];
+        appState.whichPlayerRollsSeven.shuffle();
+      }
+      if (appState.players == 4) {
+        if (appState.firstGeneration) {
+          appState.firstGeneration = false;
+          var sevensThisRound = <int>[];
+          var sevensSecondRound = <int>[1, 2, 3, 4];
+          var daco = rng.nextInt(4) + 1;
+          var daco2 = 0;
+          do {
+            daco2 = rng.nextInt(4) + 1;
+          } while (daco == daco2);
+          sevensThisRound.add(daco);
+          sevensThisRound.add(daco2);
+          sevensSecondRound.remove(daco);
+          sevensSecondRound.remove(daco2);
+          appState.nextRoundSevens = [...sevensSecondRound];
+          appState.whichPlayerRollsSeven = [...sevensThisRound, ...rndm];
+        } else {
+          appState.whichPlayerRollsSeven = [
+            ...appState.nextRoundSevens,
+            ...rndm
+          ];
+          rndm.remove(appState.nextRoundSevens[0]);
+          rndm.remove(appState.nextRoundSevens[1]);
+          appState.nextRoundSevens = rndm;
+        }
+      }
+
+      var sevenCyclePositions = <int>[];
+      var tempSeven = 0;
+
+      while (sevenCyclePositions.length < 6) {
+        switch (appState.players) {
+          case 2:
+            tempSeven = rng.nextInt(18) + 1;
+            break;
+          case 3:
+            tempSeven = rng.nextInt(12) + 1;
+            break;
+          case 4:
+            tempSeven = rng.nextInt(9) + 1;
+            break;
+          default:
+            print('ERROR sevenCyclePositions');
+        }
+
+        if (!sevenCyclePositions.contains(tempSeven)) {
+          sevenCyclePositions.add(tempSeven);
+        }
+      }
+      sevenCyclePositions.sort();
+
+      var cycle = 1;
+      var position = 1;
+      var sevensIndex = 0;
+      print('whichPlayerRollsSeven ${appState.whichPlayerRollsSeven}');
+      print('sevenCyclePositions $sevenCyclePositions');
+      for (int i = 0; i < 36; i++) {
+        if (sevenCyclePositions.length > sevensIndex &&
+            cycle == sevenCyclePositions[sevensIndex] &&
+            position == appState.whichPlayerRollsSeven[sevensIndex]) {
+          order.insert(i, 7);
+          sevensIndex++;
+        }
+
+        position++;
+        switch (appState.players) {
+          case 2:
+            if (position == 3) {
+              position = 1;
+              cycle++;
+            }
+            break;
+          case 3:
+            if (position == 4) {
+              position = 1;
+              cycle++;
+            }
+            break;
+          case 4:
+            if (position == 5) {
+              position = 1;
+              cycle++;
+            }
+            break;
+          default:
+            print("ERROR PLAYERS");
+        }
+      }
+      print('order $order');
+      print('sevenCyclePositions $sevenCyclePositions');
+      print('appState.whichPlayerRollsSeven ${appState.whichPlayerRollsSeven}');
+    }
 
     void generateNextNumber(int first, int second) {
       if (appState.mainIndex == 0) {
-        order = [...halfOrder, ...halfOrder];
-        var sevensPoolForThree = [1, 1, 2, 2, 3, 3];
-        sevensPoolForThree.shuffle();
-        print('sevensPoolForThree $sevensPoolForThree');
-
-        // sevens = [];
-        // var pool = [];
-        var sevenCyclePositions = <int>[];
-        var tempSeven = 0;
-
-        while (sevenCyclePositions.length < 6) {
-          tempSeven = rng.nextInt(12) + 1;
-
-          if (!sevenCyclePositions.contains(tempSeven)) {
-            sevenCyclePositions.add(tempSeven);
-          }
-        }
-        sevenCyclePositions.sort();
-        print('sevenCyclePositions $sevenCyclePositions');
-
-        var cyklus = 1;
-        var position = 1;
-        var sevensIndex = 0;
-
-        for (int i = 0; i < 36; i++) {
-          print('order $order');
-          // print('voslo ${sevenCyclePositions[sevensIndex]}');
-
-          if (sevenCyclePositions.length > sevensIndex &&
-              cyklus == sevenCyclePositions[sevensIndex] &&
-              position == sevensPoolForThree[sevensIndex]) {
-            print('VOSLO');
-
-            order.insert(i, 7);
-            sevensIndex++;
-          }
-          position++;
-
-          if (position == 4) {
-            position = 1;
-            cyklus++;
-          }
-        }
-        print('order: $order');
-        print('WAT: ${order.where((element) => element == 7).length}');
-        print('WAT sum: ${order.length}');
-
-        // if (players == 3) pool = [1, 2, 3];
-        // if (players == 4) pool = [1, 2, 3, 4];
-
-        // if (appState.nextRoundSevens.isEmpty) {
-        //   sevens = [...pool];
-        //   sevens.shuffle();
-        // } else {
-        //   if (appState.nextRoundSevens.length == 1) {
-        //     sevens = [...appState.nextRoundSevens, ...pool];
-        //   } else {
-        //     sevens = [...appState.nextRoundSevens];
-        //   }
-        //   sevens.shuffle();
-        // }
-        // print("waaat sevens $sevens");
-
-        // var randomN = 0;
-        // for (var i = 1; i <= 3; i++) {
-        //   if (sevens.length == 5) break;
-        //   randomN = rng.nextInt(pool.length);
-        //   sevens.add(pool[randomN]);
-        //   pool.removeAt(randomN);
-        // }
-        // appState.nextRoundSevens = [...pool];
-        // order = [1, 2, 3, 1, 2, 4, 1, 3, 5, 1, 2, 4, 1, 2, 3];
-
-        // print("waaat sevens $sevens");
-        // order.insert(sevens[0] - 1, 7);
-        // order.insert(sevens[1] + 3, 7);
-        // order.insert(sevens[2] + 7, 7);
-        // order.insert(sevens[3] + 11, 7);
-        // order.insert(sevens[4] + 15, 7);
-
-        // print('WOW $order');
+        addSevens();
       }
+      print('order: $order');
+      print('WAT: ${order.where((element) => element == 7).length}');
+      print('WAT sum: ${order.length}');
+
+      // if (players == 3) pool = [1, 2, 3];
+      // if (players == 4) pool = [1, 2, 3, 4];
+
+      // if (appState.nextRoundSevens.isEmpty) {
+      //   sevens = [...pool];
+      //   sevens.shuffle();
+      // } else {
+      //   if (appState.nextRoundSevens.length == 1) {
+      //     sevens = [...appState.nextRoundSevens, ...pool];
+      //   } else {
+      //     sevens = [...appState.nextRoundSevens];
+      //   }
+      //   sevens.shuffle();
+      // }
+      // print("waaat sevens $sevens");
+
+      // var randomN = 0;
+      // for (var i = 1; i <= 3; i++) {
+      //   if (sevens.length == 5) break;
+      //   randomN = rng.nextInt(pool.length);
+      //   sevens.add(pool[randomN]);
+      //   pool.removeAt(randomN);
+      // }
+      // appState.nextRoundSevens = [...pool];
+      // order = [1, 2, 3, 1, 2, 4, 1, 3, 5, 1, 2, 4, 1, 2, 3];
+
+      // print("waaat sevens $sevens");
+      // order.insert(sevens[0] - 1, 7);
+      // order.insert(sevens[1] + 3, 7);
+      // order.insert(sevens[2] + 7, 7);
+      // order.insert(sevens[3] + 11, 7);
+      // order.insert(sevens[4] + 15, 7);
+
+      // print('WOW $order');
+      // }
 
       var tempRandomValue = 0;
       var countOfFirst = appState.history.where((x) => x == first).length;
@@ -321,11 +390,13 @@ class _HomePageState extends State<HomePage> {
           ),
           ElevatedButton(
               onPressed: () => {
-                    setState(() {
-                      appState.history.clear();
-                      appState.mainIndex = 0;
-                      appState.randomValue = 0;
-                    }),
+                    appState.newGame()
+                    // setState(() {
+                    //   appState.history.clear();
+                    //   appState.mainIndex = 0;
+                    //   appState.randomValue = 0;
+                    //   appState.firstGeneration = true;
+                    // }),
                   },
               child: Text('Nova hra')),
           HistoryPage()
