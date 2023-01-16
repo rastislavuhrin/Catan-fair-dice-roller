@@ -32,7 +32,8 @@ class AppState extends ChangeNotifier {
   List<int> nextRoundSevens = [];
   bool firstGeneration = true;
   List<int> whichPlayerRollsSeven = [];
-  int players = 4;
+  int players = 3;
+  bool playersAlreadyChosen = false;
 
   void newGame() {
     history.clear();
@@ -41,6 +42,51 @@ class AppState extends ChangeNotifier {
     firstGeneration = true;
 
     notifyListeners();
+  }
+
+  chooseNumberOfPlayers(BuildContext context) {
+    // Create button
+    Widget enterPlayers = TextField(
+      keyboardType: TextInputType.number,
+      onChanged: (value) {
+        players = int.parse(value);
+        notifyListeners();
+        print('HAHA $players');
+      },
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Enter a search term',
+      ),
+    );
+    Widget okButton = Container(
+      margin: EdgeInsets.only(top: 20),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(padding: EdgeInsets.all(15)),
+        child: Text(
+          "Potvrd",
+          style: TextStyle(fontSize: 20),
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    );
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Kolko hracov hra?"),
+      actions: [
+        enterPlayers,
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 
@@ -104,50 +150,11 @@ class AppBaseState extends State<AppBase> {
       );
     }
 
-    chooseNumberOfPlayers(BuildContext context) {
-      // Create button
-      Widget cancelButton = TextField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'Enter a search term',
-        ),
-      );
-      Widget okButton = Container(
-        margin: EdgeInsets.only(top: 20),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(padding: EdgeInsets.all(15)),
-          child: Text(
-            "Potvrd",
-            style: TextStyle(fontSize: 20),
-          ),
-          onPressed: () {
-            appState.newGame();
-            Navigator.of(context).pop();
-          },
-        ),
-      );
-      // Create AlertDialog
-      AlertDialog alert = AlertDialog(
-        title: Text("Kolko hracov hra?"),
-        actions: [
-          cancelButton,
-          okButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
-
     void handleClick(String value) {
       switch (value) {
         case 'Zvol pocet hracov':
-          chooseNumberOfPlayers(context);
+          appState.chooseNumberOfPlayers(context);
+          appState.playersAlreadyChosen = true;
           print("preslo1");
           break;
         case 'Nova hra':
@@ -349,61 +356,55 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Center(
-      child: Padding(
-        padding: EdgeInsets.only(top: 36.0, left: 20),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text("widget"),
-            ),
-            Text(
-              '${appState.randomValue}',
-              style: TextStyle(fontSize: 90),
-            ),
-            SizedBox(height: 50),
-            ElevatedButton(
-              onPressed: () {
-                if (appState.firstGeneration) {
-                  // showAlertDialog(context);
-                } else {
-                  switch (order[appState.mainIndex]) {
-                    case 1:
-                      generateNextNumber(6, 8);
-                      break;
-                    case 2:
-                      generateNextNumber(5, 9);
-                      break;
-                    case 3:
-                      generateNextNumber(4, 10);
-                      break;
-                    case 4:
-                      generateNextNumber(3, 11);
-                      break;
-                    case 5:
-                      generateNextNumber(2, 12);
-                      break;
-                    case 7:
-                      generateNextNumber(7, 7);
-                      break;
-                    default:
-                      print("CHYBA");
-                  }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '${appState.randomValue}',
+            style: TextStyle(fontSize: 90),
+          ),
+          SizedBox(height: 50),
+          ElevatedButton(
+            onPressed: () {
+              if (!appState.playersAlreadyChosen) {
+                appState.chooseNumberOfPlayers(context);
+                appState.playersAlreadyChosen = true;
+              } else {
+                switch (order[appState.mainIndex]) {
+                  case 1:
+                    generateNextNumber(6, 8);
+                    break;
+                  case 2:
+                    generateNextNumber(5, 9);
+                    break;
+                  case 3:
+                    generateNextNumber(4, 10);
+                    break;
+                  case 4:
+                    generateNextNumber(3, 11);
+                    break;
+                  case 5:
+                    generateNextNumber(2, 12);
+                    break;
+                  case 7:
+                    generateNextNumber(7, 7);
+                    break;
+                  default:
+                    print("CHYBA");
                 }
-              },
-              style: ElevatedButton.styleFrom(
-                textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                ),
-                padding: EdgeInsets.all(20),
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              textStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 35,
               ),
-              child: const Text('Hod kockou'),
+              padding: EdgeInsets.all(20),
             ),
-            HistoryPage()
-          ],
-        ),
+            child: const Text('Hod kockou'),
+          ),
+          HistoryPage()
+        ],
       ),
     );
   }
@@ -420,15 +421,42 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
-    var daco = [1, 2, 3, 3];
-    List<String> litems = ["1", "2", "Third", "4"];
 
     return Center(
         child: Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Text('Kockou sa uz hodilo ${appState.history.length} krat:'),
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(fontSize: 20, color: Colors.black),
+              children: <TextSpan>[
+                TextSpan(text: 'Túto hru hrajú '),
+                TextSpan(
+                    text: '${appState.players}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    )),
+                TextSpan(text: ' hráči.'),
+              ],
+            ),
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            style: TextStyle(fontSize: 20, color: Colors.black),
+            children: <TextSpan>[
+              TextSpan(text: 'Kockou sa uz hodilo '),
+              TextSpan(
+                  text: '${appState.history.length}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  )),
+              TextSpan(text: ' krát.'),
+            ],
+          ),
         ),
         Text('${appState.history}'),
       ],
