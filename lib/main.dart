@@ -322,9 +322,9 @@ class _HomePageState extends State<HomePage> {
             print("ERROR PLAYERS");
         }
       }
-      print('order $order');
-      print('sevenCyclePositions $sevenCyclePositions');
-      print('appState.whichPlayerRollsSeven ${appState.whichPlayerRollsSeven}');
+      // print('order $order');
+      // print('sevenCyclePositions $sevenCyclePositions');
+      // print('appState.whichPlayerRollsSeven ${appState.whichPlayerRollsSeven}');
     }
 
     void generateNextNumber(int first, int second) {
@@ -332,10 +332,11 @@ class _HomePageState extends State<HomePage> {
         addSevens();
       }
       print('order: $order');
-      print('WAT: ${order.where((element) => element == 7).length}');
-      print('WAT sum: ${order.length}');
+      // print('WAT: ${order.where((element) => element == 7).length}');
+      // print('WAT sum: ${order.length}');
 
       var tempRandomValue = 0;
+      // finds out if theres more 6s or 8s and generate the one which is less
       var countOfFirst = appState.history.where((x) => x == first).length;
       var countOfSecond = appState.history.where((x) => x == second).length;
       if (countOfFirst == countOfSecond) {
@@ -355,6 +356,33 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
+    void generate36numbers() {
+      for (int i = 1; i <= 36; i++) {
+        switch (order[appState.mainIndex]) {
+          case 1:
+            generateNextNumber(6, 8);
+            break;
+          case 2:
+            generateNextNumber(5, 9);
+            break;
+          case 3:
+            generateNextNumber(4, 10);
+            break;
+          case 4:
+            generateNextNumber(3, 11);
+            break;
+          case 5:
+            generateNextNumber(2, 12);
+            break;
+          case 7:
+            generateNextNumber(7, 7);
+            break;
+          default:
+            print("CHYBA");
+        }
+      }
+    }
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -369,29 +397,33 @@ class _HomePageState extends State<HomePage> {
               if (!appState.playersAlreadyChosen) {
                 appState.chooseNumberOfPlayers(context);
                 appState.playersAlreadyChosen = true;
-              } else {
-                switch (order[appState.mainIndex]) {
-                  case 1:
-                    generateNextNumber(6, 8);
-                    break;
-                  case 2:
-                    generateNextNumber(5, 9);
-                    break;
-                  case 3:
-                    generateNextNumber(4, 10);
-                    break;
-                  case 4:
-                    generateNextNumber(3, 11);
-                    break;
-                  case 5:
-                    generateNextNumber(2, 12);
-                    break;
-                  case 7:
-                    generateNextNumber(7, 7);
-                    break;
-                  default:
-                    print("CHYBA");
-                }
+              }
+              if (appState.mainIndex == 0) {
+                addSevens();
+              }
+              // generate36numbers();
+
+              switch (order[appState.mainIndex]) {
+                case 1:
+                  generateNextNumber(6, 8);
+                  break;
+                case 2:
+                  generateNextNumber(5, 9);
+                  break;
+                case 3:
+                  generateNextNumber(4, 10);
+                  break;
+                case 4:
+                  generateNextNumber(3, 11);
+                  break;
+                case 5:
+                  generateNextNumber(2, 12);
+                  break;
+                case 7:
+                  generateNextNumber(7, 7);
+                  break;
+                default:
+                  print("CHYBA");
               }
             },
             style: ElevatedButton.styleFrom(
