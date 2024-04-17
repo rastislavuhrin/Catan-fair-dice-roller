@@ -356,32 +356,32 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
-    void generate36numbers() {
-      for (int i = 1; i <= 36; i++) {
-        switch (order[appState.mainIndex]) {
-          case 1:
-            generateNextNumber(6, 8);
-            break;
-          case 2:
-            generateNextNumber(5, 9);
-            break;
-          case 3:
-            generateNextNumber(4, 10);
-            break;
-          case 4:
-            generateNextNumber(3, 11);
-            break;
-          case 5:
-            generateNextNumber(2, 12);
-            break;
-          case 7:
-            generateNextNumber(7, 7);
-            break;
-          default:
-            print("CHYBA");
-        }
-      }
-    }
+    // void generate36numbers() { wat
+    //   for (int i = 1; i <= 36; i++) {
+    //     switch (order[appState.mainIndex]) {
+    //       case 1:
+    //         generateNextNumber(6, 8);
+    //         break;
+    //       case 2:
+    //         generateNextNumber(5, 9);
+    //         break;
+    //       case 3:
+    //         generateNextNumber(4, 10);
+    //         break;
+    //       case 4:
+    //         generateNextNumber(3, 11);
+    //         break;
+    //       case 5:
+    //         generateNextNumber(2, 12);
+    //         break;
+    //       case 7:
+    //         generateNextNumber(7, 7);
+    //         break;
+    //       default:
+    //         print("CHYBA");
+    //     }
+    //   }
+    // }
 
     return Center(
       child: Column(
