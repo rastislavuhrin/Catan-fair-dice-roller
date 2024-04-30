@@ -333,7 +333,7 @@ class _HomePageState extends State<HomePage> {
       }
       print('order: $order');
       // print('WAT: ${order.where((element) => element == 7).length}');
-      // print('WAT sum: ${order.lengthk}');
+      // print('WAT sum: ${order.length5}');
 
       var tempRandomValue = 0;
       // finds out if theres more 6s or 8s and generate msheds one which is less
