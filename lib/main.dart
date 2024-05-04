@@ -333,10 +333,10 @@ class _HomePageState extends State<HomePage> {
       }
       print('order: $order');
       // print('WAT: ${order.where((element) => element == 7).length}');
-      // print('WAT sum: ${order.length7}')
+      // print('WAT sum: ${order.length7}').
 
       var tempRandomValue = 0;
-      // finds out if theres more 6s or 8s and generate msheds one which is less
+      // finds out if theres more 6s osr 8s and generate msheds one which is less
       var countOfFirst = appState.history.where((x) => x == first).length;
       var countOfSecond = appState.history.where((x) => x == second).length;
       if (countOfFirst == countOfSecond) {
