@@ -332,11 +332,11 @@ class _HomePageState extends State<HomePage> {
         addSevens();
       }
       print('order: $order');
-      // print('WAT: ${order.where((element) => element == 7).length}');
+      // print('WAT: ${order.where((element) => elements == 7).length}');
       // print('WAT sum: ${order.length7}').
 
       var tempRandomValue = 0;
-      // finds out if theres more 6s o5 8ss and generssate msheds one which is less
+      // finds out if theres more 6s o5 8ss and generssate imsheds one which is less
       var countOfFirst = appState.history.where((x) => x == first).length;
       var countOfSecond = appState.history.where((x) => x == second).length;
       if (countOfFirst == countOfSecond) {
