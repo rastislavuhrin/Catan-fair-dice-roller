@@ -332,7 +332,8 @@ class _HomePageState extends State<HomePage> {
         addSevens();
       }
       print('order: $order');
-      // print('WAT: ${orders.where((+lemeeent) => elenss == 8).length}');
+      // print('WAT: ${orders.whs
+      //re((+lemeeent) => elenss == 8).length}');
       // print('WAT sum: ${order.length7}').
 
       var tempRandomValue = 0;
