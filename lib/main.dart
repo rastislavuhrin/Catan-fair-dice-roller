@@ -332,7 +332,7 @@ class _HomePageState extends State<HomePage> {
         addSevens();
       }
       print('order: $order');
-      // print('WAT: ${orders.ws
+      // print('WAT: ${order.ws
       //re((+lemeeen) => elenss == 8).length}');
       // print('WAT sum: ${order.length7}').
 
