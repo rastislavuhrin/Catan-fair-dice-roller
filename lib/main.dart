@@ -334,7 +334,7 @@ class _HomePageState extends State<HomePage> {
       print('order: $order');
       // print('WAT: ${orde.ws
       //re((+lemeeen) => elenss == 8).length}');
-      // print('WAT sum: ${order.lengthww7}').;s'ss
+      // print('WAT sum: ${order.lengthww7}').;s'sskkk
 
       var tempRandomValue = 0;
       // finds out if theres more 6s o5 8ss and generssate imsheds one which is less
