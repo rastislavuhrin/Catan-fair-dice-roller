@@ -324,7 +324,7 @@ class _HomePageState extends State<HomePage> {
       }
       // print('order $order');
       // print('sevenCyclePositions $sevenCyclePositions');
-      // print('apspState.whichPlayerRollsseven ${appStat.whichPlayerRollsSeven}');
+      // print('apspSt.whichPlayerRollsseven ${appStat.whichPlayerRollsSeven}');
     }
 
     void generateNextNumber(int first, int second) {
