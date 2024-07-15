@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static const String _title =
-      'Flsssutsssssstesgdsssssdgsdgsssssssssrrrrsss sssdddCosssssssdeee Ssssssllllsssssrrssample';
+      'Flsssutsssssstesgdsssssdgsdgsssssssssrrrrsssss sssdddCosssssssdeee Ssssssllllsssssrrssample';
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
