@@ -9,7 +9,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const String _title = 'haasss';
+  static const String _title = 'haasssss';
   static const String _stitle = 'ss..ssssss';
   @override
   Widget build(BuildContext context) {
