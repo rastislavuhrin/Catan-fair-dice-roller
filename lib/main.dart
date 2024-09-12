@@ -9,8 +9,8 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const String _title = 'haasssssssss';
-  static const String _stitle = 'ss..ssssss';
+  static const String _title = '';
+  static const String _stitle = '..';
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
