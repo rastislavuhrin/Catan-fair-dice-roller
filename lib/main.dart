@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         title: _title,
         home: AppBase(),
         debugShowCheckedModeBanner: false,
-      ), // ssss4aaa54sssssssssss
+      ), // 
     );
   }
 }
