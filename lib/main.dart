@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 }
 
 class AppState extends ChangeNotifier {
-  var history = [];
+
   int randomValue = 0;
   int mainIndex = 0;
   int seven = 0;
