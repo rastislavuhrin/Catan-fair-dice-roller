@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
 class AppState extends ChangeNotifier {
 
-  int randomValue = 0;
+
   int mainIndex = 0;
   int seven = 0;
   List<int> nextRoundSevens = [];
