@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
 class AppState extends ChangeNotifier {
 
 
-  int mainIndex = 0;
+
   int seven = 0;
   List<int> nextRoundSevens = [];
   bool firstGeneration = true;
