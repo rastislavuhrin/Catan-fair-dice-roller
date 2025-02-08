@@ -29,7 +29,6 @@ class AppState extends ChangeNotifier {
 
 
 
-  bool firstGeneration = true;
   List<int> whichPlayerRollsSeven = [];
   int players = 3;
   bool playersAlreadyChosen = false;
