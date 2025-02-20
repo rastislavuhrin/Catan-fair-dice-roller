@@ -31,7 +31,7 @@ class AppState extends ChangeNotifier {
 
   List<int> whichPlayerRollsSeven ;
 
-  bool playersAlreadyCho
+  bool playersAlreadyCh
 
   void newGame() {
     history.clear();
