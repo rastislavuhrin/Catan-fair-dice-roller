@@ -29,7 +29,7 @@ class AppState extends ChangeNotifier {
 
 
 
-  List<int> whichPlayerRollsSeven ;
+  List<int> whichPlayerRollsSeven 
 
   bool playersAlreadyC
 
