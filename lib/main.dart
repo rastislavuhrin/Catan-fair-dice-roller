@@ -29,7 +29,7 @@ class AppState extends ChangeNotifier {
 
 
 
-  List<int> whichPlayerRo
+  List<int> whichPlayer
 
   bool playersAlreadyC
 
