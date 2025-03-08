@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AppState extends ChangeNotifier 
+class AppState extends ChangeNotifie
 
 
 
