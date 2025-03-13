@@ -31,7 +31,7 @@ class AppState extends ChangeNot
 
   List<int> whichPl
 
-  bool playersAlrea
+  bool playersAlre
 
   void newGame() {
     history.clear();
