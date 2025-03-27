@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:provider/provider.dart';
 // //}
 
-// class MyApp extends StatelssWidge
+// class MyApp extends StatelssWidg
 //   con
 
 
