@@ -10,7 +10,13 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(MyApp());
 }
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
+//   static const String _title = '';
+//   static const String _stitle = '..sssss';
+//   @override
+//   Widget build(BuildContext context) {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
